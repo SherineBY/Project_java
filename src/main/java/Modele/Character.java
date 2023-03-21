@@ -14,7 +14,8 @@ public abstract class Character {
 
     }
     public abstract int attack();
-    public abstract int defend();
+
+    public abstract int attack(Character character);
 
     public boolean isDead() {
         if (this.hp <= 0) {

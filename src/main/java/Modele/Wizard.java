@@ -1,8 +1,5 @@
 package Modele;
 
-import Modele.*;
-import Modele.Character;
-
 import java.util.List;
 
 public class Wizard extends Character{
@@ -11,36 +8,35 @@ public class Wizard extends Character{
     private House house;
     private List<Spell> knownSpells;
     private List<Potion> potions;
-    public Wizard(String name, int level, int maxhp, int attaque) {
-        super(name, level, maxhp, attaque);
+
+    public Wizard(String name, int level, int maxhp, int attack) {
+        super(name, level, maxhp, attack);
         this.potions.add(new Potion("Potion", 50));
     }
-    //character correspond à un ennemi ou un boss qu'on attaque
+
+    @Override
+    public int attack() {
+        return 0;
+    }
+
     @Override
     public int attack(Character character) {
-        return character.hp - this.attaque;
+        return character.hp - this.attack;
     }
 
     @Override
     public boolean isDead() {
-        if (this.hp <= 0) {
-            System.out.println("You are dead !");
-            return true;
-        } else {
-            return false;
-        }
+        return super.isDead();
     }
-
-    public void defend() {
-        System.out.println(this.name + " Sorcier vous avez bloqué une attaque de l'enemy !");
+    public void defend(){
+        System.out.println(this.name+"Wizard you have blocked an attack of the enemy");
     }
-
-    public void newPotion(Potion potion) {
+    public void newpotion(Potion potion){
         this.potions.add(potion);
     }
-
-    public void usePotion() {
+    public void usePotion(){
         this.potions.remove(0);
     }
 }
+
 
