@@ -1,7 +1,5 @@
 package Modele;
 
-import java.util.ArrayList;
-
 public abstract class Character {
     public String name;
     public int maxhp,hp,level,attack;
@@ -13,7 +11,10 @@ public abstract class Character {
         this.attack=attack;
 
     }
-    public abstract int attack();
+
+    public int attack() {
+        return 0;
+    }
 
     public abstract int attack(Character character);
 
