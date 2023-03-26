@@ -14,18 +14,30 @@ public class Wizard extends Character{
         this.potions.add(new Potion("Potion", 50));
     }
 
-    @Override
-    public int attack() {
-        return 0;
+    public void setName(String name){
+        this.name= name;
+    }
+    public String getName() {
+        return name;
+    }
+
+    public void setPet(Pet pet) {
+        this.pet = pet;
+    }
+    public void setWand(Wand wand){
+        this.wand= wand;
+    }
+    public Wand getWand(){
+        return wand;
     }
 
     @Override
     public int attack(Character character) {
-        return character.hp - this.attack;
+        return super.attack(character);
     }
 
     @Override
-    public boolean isDead() {
+    public String isDead() {
         return super.isDead();
     }
     public void defend(){

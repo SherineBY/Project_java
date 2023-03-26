@@ -25,6 +25,9 @@ public class GameConsole {
             Scanner scanner = new Scanner(System.in);
             System.out.println("what is your name?");
             String name= scanner.nextLine();
+            Wizard NameWizard = new Wizard(name, 1, 100, 10);
+            NameWizard.setName(name);
+
             System.out.println("hello young wizard " +name+" welcome to Hogwarts ");
             System.out.println("you will now participate in the sorting ceremony in which the SortingHat will define to which house you belong ");
             System.out.println("Difficult, very difficult... I see a lot of courage and intellectual qualities too. There's talent, oh yes, and a great desire to prove yourself. So where do I put you?");
@@ -44,6 +47,7 @@ public class GameConsole {
                             break;
                     }
             }
+            NameWizard.setPet(Pet.valueOf(petName));
 
         }
 }

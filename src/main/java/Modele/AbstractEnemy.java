@@ -8,11 +8,11 @@ public abstract class AbstractEnemy extends Character {
 
     @Override
     public int attack(Character character) {
-        return super.attack();
+        return super.attack(character);
     }
 
     @Override
-    public boolean isDead() {
+    public String isDead() {
         return super.isDead();
     }
 }

@@ -7,7 +7,12 @@ public class Enemy extends AbstractEnemy  {
     }
 
     @Override
-    public int attack() {
-        return 0;
+    public int attack(Character character) {
+        return super.attack(character);
+    }
+
+    @Override
+    public String isDead() {
+        return super.isDead();
     }
 }
