@@ -2,7 +2,10 @@ package Modele;
 
 public abstract class Character {
     public String name;
-    public int maxhp, hp, level, attack;
+    public static int maxhp;
+    public static int hp;
+    public int level;
+    public int attack;
 
     public Character(String name, int level, int maxhp, int attack) {
         this.hp = maxhp;
@@ -23,12 +26,9 @@ public abstract class Character {
     }
 
 
-    public String isDead() {
-        if (this.hp <= 0) {
-            return "You have been defeated!";
-        } else {
-            return "Enemy has been defeated!";
+    public boolean isDead() {
+        return hp <=0;
         }
     }
 
-}
+

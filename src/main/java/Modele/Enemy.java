@@ -1,10 +1,23 @@
 package Modele;
 
-public class Enemy extends AbstractEnemy  {
+import java.util.ArrayList;
+import java.util.List;
 
-    public Enemy(String name, int level, int maxhp, int attack) {
-        super(name, level, maxhp, attack);
+public class Enemy extends AbstractEnemy {
+    private List<Enemy> enemies;
+    public Enemy(String name, int level, int maxhp, int attack, int hp) {
+        super(name, level, maxhp, attack, hp);
+        enemies=new ArrayList<>();
     }
+
+    public List<Enemy> getEnemies() {
+        return enemies;
+    }
+
+    public void setEnemies(List<Enemy> enemies) {
+        this.enemies = enemies;
+    }
+
 
     @Override
     public int attack(Character character) {
@@ -12,7 +25,8 @@ public class Enemy extends AbstractEnemy  {
     }
 
     @Override
-    public String isDead() {
+    public boolean isDead() {
         return super.isDead();
     }
 }
+

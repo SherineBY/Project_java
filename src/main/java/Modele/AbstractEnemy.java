@@ -2,7 +2,8 @@ package Modele;
 
 public abstract class AbstractEnemy extends Character {
 
-    public AbstractEnemy(String name, int level, int maxhp, int attack) {
+
+    public AbstractEnemy(String name, int level, int maxhp, int attack, int hp) {
         super(name, level, maxhp, attack);
     }
 
@@ -12,7 +13,7 @@ public abstract class AbstractEnemy extends Character {
     }
 
     @Override
-    public String isDead() {
+    public boolean isDead() {
         return super.isDead();
     }
 }
