@@ -14,13 +14,8 @@ public class Wizard extends Character{
         this.pet=pet;
         this.wand=wand;
         this.house=house;
+        this.hp=maxhp;
         this.potions=new ArrayList<>();
-
-        Potion healpotion= new Potion("healing potion",20);
-        Potion immunityPotion= new Potion("immunity potion", 100);
-
-        this.potions.add(healpotion);
-        this.potions.add(immunityPotion);
     }
 
     public House getHouse() {
@@ -48,10 +43,25 @@ public class Wizard extends Character{
     }
 
     public void setWand(Wand wand){
+
         this.wand= wand;
     }
     public Wand getWand(){
+
         return wand;
+    }
+    public int getLevel(){
+        return level;
+    }
+    public void setLevel(int level){
+        this.level=level;
+    }
+    public int getHp(){
+        return hp;
+    }
+
+    public void setHp(int hp) {
+        this.hp = hp;
     }
 
     @Override
@@ -74,17 +84,31 @@ public class Wizard extends Character{
     }
 
     public List<Potion> getPotions() {
+
         return potions;
     }
 
     public void setPotions(List<Potion> potions) {
+
         this.potions = potions;
     }
-
-    public void usePotion(){
-
+    public void removePotion(Potion potion){
         this.potions.remove(0);
     }
+    public void levelUp(){
+        System.out.println("Félicitations, vous êtes maintenant au niveau " + level + " !");
+        maxhp += 10;
+        hp = maxhp;
+        attack += 2;
+
+        // Ajout d'une potion de guérison et d'une potion d'attaque
+        potions.add(new Potion("healing potion",20));
+        potions.add(new Potion("immunity potion",100));
+        potions.add(new Potion("attack potion", 30));
+    }
+
+
+
 
 }
 

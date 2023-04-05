@@ -24,8 +24,7 @@ public class Potion {
     public void setName(String name) {
         this.name = name;
     }
-
-    public void healpotioneffect(Wizard wizard){
+    public static void healpotioneffect(Wizard wizard){
         if (wizard.hp == wizard.maxhp) {
             System.out.println("You are already full hp ! You don't need to use a potion !");
         } else {
@@ -40,7 +39,7 @@ public class Potion {
 
     }
 
-    public void attackpotioneffect(AbstractEnemy enemy){
+    public static void attackpotioneffect(AbstractEnemy enemy){
         int damage = this.heal;
         enemy.hp -= damage;
         System.out.println("You use a potion and deal " + damage + " damage to the enemy!");
@@ -48,6 +47,5 @@ public class Potion {
             System.out.println("You have defeated the enemy and can proceed to the next level!");
         }
     }
-
 
 }

@@ -8,9 +8,7 @@ public class GameConsole {
 
 
         private Wizard Playerwizard;
-
         private Wand wand;
-
         private House house;
         private List<Enemy> enemies;
         private AbstractEnemy currentEnemy;
@@ -34,6 +32,7 @@ public class GameConsole {
         Pet petName = null;
         Wand wand = null;
         Playerwizard = new Wizard(name, 1, 100, 0, petName, wand, choiceHouse());
+        AbstractEnemy currentEnemy = this.enemies.get(Playerwizard.getLevel() - 1);
         System.out.println("hello young wizard " + name + " welcome to Hogwarts ");
         System.out.println("you will now participate in the sorting ceremony in which the SortingHat will define to which house you belong ");
         System.out.println("Difficult, very difficult... I see a lot of courage and intellectual qualities too. There's talent, " +
@@ -71,59 +70,62 @@ public class GameConsole {
 
         return enemies;
     }
-    public void level(int level) {
-        currentEnemy = enemies.get(level-1);
-        }
-
     public void level() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("welcome to The Philosopher’s Stone level");
-        Enemy enemies = Playerwizard.defineEnemy();
-
-        while (Playerwizard.getHp() > 0 && enemies.getHp() > 0) {
-            System.out.println("\n" + Playerwizard.getName() + ", que voulez-vous faire?");
-            System.out.println("1. Boire une potion de guérison ou d'immortalité");
-            System.out.println("2. Utiliser une potion d'attaque");
-
+        System.out.println("Bienvenue au niveau de la Pierre Philosophale");
+        List<Enemy> enemies = defineEnemies();
+        Enemy currentEnemy = enemies.get(Playerwizard.getLevel() - 1);
+        while (Playerwizard.getHp() > 0 && currentEnemy.getHp() > 0) {
+            System.out.println("\n" + Playerwizard.getName() + ", what do you want to do");
+            System.out.println("1. use potion");
+            System.out.println("2. use spell");
             int choice = scanner.nextInt();
-            switch (choice) {
-                case 1:
-                    List<Potion> potions = Playerwizard.getPotions();
-                    System.out.println("Quelle potion voulez-vous utiliser?");
-                    for (int i = 0; i < potions.size(); i++) {
-                        System.out.println(i + 1 + ". " + potions.get(i).getName());
+            if (choice == 1) {
+                System.out.println("1. Boire une potion de guérison");
+                System.out.println("2. Boire une potion d'attaque");
+                int choicePotion = scanner.nextInt();
+                if (choicePotion==1) {
+                    System.out.println("1. drink heal potion ");
+                    System.out.println("2. drink immunity potion");
+                    int choisehealPotion= scanner.nextInt();
+                    if (choisehealPotion==1) {
+                        Potion healPotion = Playerwizard.getPotionOfType("heal potion");
+                        Potion.healpotioneffect(Playerwizard);
+                        Playerwizard.removePotion(healPotion);
+                    }else{
+                        Potion immunityPotion = Playerwizard.getPotionOfType("immunity potion");
+                        Potion.healpotioneffect(Playerwizard);
+                        Playerwizard.removePotion(immunityPotion);
                     }
-                    int potionChoice = scanner.nextInt();
-                    Potion potion = potions.get(potionChoice - 1);
-                    if (potion instanceof HealPotion) {
-                        Playerwizard.heal(((HealPotion) potion).getHeal());
-                        System.out.println(Playerwizard.getName() + " a bu une potion de guérison et a maintenant " + wizard.getHp() + " points de vie.");
-                    } else if (potion instanceof ImmortalityPotion) {
-                        Playerwizard.setImmune(true);
-                        System.out.println(Playerwizard.getName() + " a bu une potion d'immortalité et est maintenant immunisé contre les attaques ennemies.");
-                    }
-                    Playerwizard.usePotion();
-                    break;
-                case 2:
-                    Playerwizard.attackPotionEffect(enemy);
-                    if (enemies.isDead()) {
-                        System.out.println("Vous avez vaincu " + enemies.getName() + " et pouvez passer au niveau suivant!");
-                        level++;
-                    } else {
-                        enemies.attack(Playerwizard);
-                    }
-                    break;
-                default:
-                    System.out.println("Choix invalide.");
-                    break;
+                } else {
+                    System.out.println("you have chosen an attack potion so you will poison your enemy ");
+                    Potion Attackpotion = Playerwizard.getPotionOfType("poison potion attack");
+                    Potion.attackpotioneffect(currentEnemy);
+                    Playerwizard.removePotion(Attackpotion);
+                }
+            } else if (choice == 2) {
+                System.out.println("Choose a spell to use: " + Arrays.toString(AbstractSpell.values()));
+                AbstractSpell spell = AbstractSpell.valueOf(scanner.next());
+                if (Playerwizard.getWand().getCore() == AbstractSpell.getCore()) {
+                    System.out.println("The wand and the spell have the same core, the spell is twice as effective!");
+                    AbstractSpell.cast(currentEnemy, Playerwizard.getWand().getSize() * 2);
+                } else {
+                    AbstractSpell.cast(currentEnemy, Playerwizard.getWand().getSize());
+                }
+                System.out.println("You used " + AbstractSpell.getName() + " and dealt " + currentEnemy.getAttack() + " damage to " + currentEnemy.getName() + ".");
+            }
             }
         }
+
         if (Playerwizard.getHp() > 0) {
-            System.out.println("Félicitations, vous avez terminé le niveau " + level + "!");
+            System.out.println("\nFélicitations, vous avez vaincu " + currentEnemy.getName() + " !");
+            Playerwizard.levelUp();
+            System.out.println("Vous êtes maintenant au niveau " + Playerwizard.getLevel() + ".");
+            level();
         } else {
-            System.out.println("Dommage, vous avez perdu. Veuillez réessayer.");
+            System.out.println("\n" + currentEnemy.getName() + " vous a vaincu. Game Over.");
         }
-    }
+        }
 }
 
 

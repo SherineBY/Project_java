@@ -16,6 +16,11 @@ public abstract class Character {
 
     }
 
+    public int getLevel(){
+        return level;
+    }
+
+
     public int attack(Character character) {
         int damage = this.attack;
         character.hp -= damage;
