@@ -2,50 +2,52 @@ package Modele;
 
 public class Potion {
     private String name;
-    private int heal;
+    private int amount;
+    private int damageAmount;
 
-    public Potion(String name,int heal){
-        this.name=name;
-        this.heal=heal;
+    public Potion(String name, int amount, int damageAmount) {
+        this.name = name;
+        this.amount = amount;
+        this.damageAmount = damageAmount;
     }
 
-    public int getHeal() {
-        return heal;
-    }
+
 
     public String getName() {
         return name;
     }
 
-    public void setHeal(int heal) {
-        this.heal = heal;
+    public int getAmount() {
+        return amount;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public int getDamageAmount() {
+        return damageAmount;
     }
-    public static void healpotioneffect(Wizard wizard){
-        if (wizard.hp == wizard.maxhp) {
-            System.out.println("You are already full hp ! You don't need to use a potion !");
+
+    public static void useHealingPotion(Wizard wizard, int healAmount) {
+        if (wizard.getHp() == wizard.getMaxHp()) {
+            System.out.println("You are already at full health. No need to use a healing potion.");
         } else {
-            int heal = wizard.hp + this.heal;
-            if (heal >= wizard.maxhp) {
-                wizard.hp = wizard.maxhp;
-                System.out.println("You use a potion and heal : " + wizard.maxhp);
+            int remainingHp = wizard.getHp() + healAmount;
+            if (remainingHp > wizard.getMaxHp()) {
+                remainingHp = wizard.getMaxHp();
             }
-            System.out.println("You use a potion and heal : " + wizard.hp);
-        }
-
-
-    }
-
-    public static void attackpotioneffect(AbstractEnemy enemy){
-        int damage = this.heal;
-        enemy.hp -= damage;
-        System.out.println("You use a potion and deal " + damage + " damage to the enemy!");
-        if (enemy.isDead()) {
-            System.out.println("You have defeated the enemy and can proceed to the next level!");
+            int amountHealed = remainingHp - wizard.getHp();
+            wizard.setHp(remainingHp);
+            System.out.println("You used a healing potion and healed " + amountHealed + " HP. Your current HP is " + wizard.getHp() + ".");
         }
     }
+
+    public static void useAttackPotion(Enemy enemy, Wizard playerWizard, int damageAmount) {
+        int remainingHp = enemy.getHp() - damageAmount;
+        if (remainingHp < 0) {
+            remainingHp = 0;
+        }
+        int damageDealt = damageAmount - remainingHp;
+        enemy.takeDamage(damageDealt);
+        System.out.println("You used an attack potion and dealt " + damageDealt + " damage to " + enemy.getName() + ". " + enemy.getName() + "'s current HP is " + enemy.getHp() + ".");
+    }
+
 
 }

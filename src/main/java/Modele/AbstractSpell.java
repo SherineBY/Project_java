@@ -2,9 +2,10 @@ package Modele;
 
 public abstract class AbstractSpell extends Spell {
 
+    public abstract int getDamage();
 
-    public AbstractSpell(String name, int levelRequired) {
-        super(name, levelRequired);
+    public AbstractSpell(String name, int levelRequired, Core core) {
+        super(name, levelRequired, core);
     }
 
     @Override
@@ -18,7 +19,11 @@ public abstract class AbstractSpell extends Spell {
     }
 
     @Override
-    public void cast(Character character) {
-        super.cast(character);
+    public void cast(Enemy enemy, int wandSize) {
+        int damage = calculateDamage(wandSize);
+        enemy.takeDamage(damage);
+        System.out.println("You cast " + getName() + " and dealt " + damage + " damage to " + enemy.getName() + ".");
     }
+
 }
+

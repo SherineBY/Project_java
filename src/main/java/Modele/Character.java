@@ -2,8 +2,8 @@ package Modele;
 
 public abstract class Character {
     public String name;
-    public static int maxhp;
-    public static int hp;
+    public int maxhp;
+    public  int hp;
     public int level;
     public int attack;
 
@@ -20,20 +20,33 @@ public abstract class Character {
         return level;
     }
 
+    public String getName() {
+        return name;
+    }
 
-    public int attack(Character character) {
-        int damage = this.attack;
-        character.hp -= damage;
-        if (character.hp <= 0) {
+    public void setHp(int hp) {
+        this.hp = hp;
+    }
+
+    public int getHp() {
+        return hp;
+    }
+
+    public void takeDamage(int damage) {
+        hp -= damage;
+        if (hp <= 0) {
             System.out.println(name + " has been defeated!");
         }
-        return damage;
     }
+
 
 
     public boolean isDead() {
         return hp <=0;
         }
-    }
+
+
+}
+
 
 

@@ -1,21 +1,25 @@
 package Modele;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Wizard extends Character{
+public class Wizard extends Character {
     private Wand wand;
     private Pet pet;
     private House house;
     private List<Spell> knownSpells;
     private List<Potion> potions;
 
-    public Wizard(String name, int level, int maxhp, int attack,Pet pet,Wand wand,House house) {
+    public Wizard(String name, int level, int maxhp, int attack, Pet pet, Wand wand, House house) {
         super(name, level, maxhp, attack);
-        this.pet=pet;
-        this.wand=wand;
-        this.house=house;
-        this.hp=maxhp;
-        this.potions=new ArrayList<>();
+        this.pet = pet;
+        this.wand = wand;
+        this.house = house;
+        this.potions = new ArrayList<>();
+    }
+
+    public int getMaxHp() {
+        return maxhp;
     }
 
     public House getHouse() {
@@ -26,10 +30,10 @@ public class Wizard extends Character{
         this.house = house;
     }
 
-    public void setName(String name){
-
-        this.name= name;
+    public void setName(String name) {
+        this.name = name;
     }
+
     public String getName() {
         return name;
     }
@@ -42,21 +46,23 @@ public class Wizard extends Character{
         return pet;
     }
 
-    public void setWand(Wand wand){
-
-        this.wand= wand;
+    public void setWand(Wand wand) {
+        this.wand = wand;
     }
-    public Wand getWand(){
 
+    public Wand getWand() {
         return wand;
     }
-    public int getLevel(){
+
+    public int getLevel() {
         return level;
     }
-    public void setLevel(int level){
-        this.level=level;
+
+    public void setLevel(int level) {
+        this.level = level;
     }
-    public int getHp(){
+
+    public int getHp() {
         return hp;
     }
 
@@ -65,8 +71,8 @@ public class Wizard extends Character{
     }
 
     @Override
-    public int attack(Character character) {
-        return super.attack(character);
+    public void takeDamage(int damage) {
+        super.takeDamage(damage);
     }
 
     @Override
@@ -74,42 +80,35 @@ public class Wizard extends Character{
         return super.isDead();
     }
 
-    public void defend(){
-
-        System.out.println(this.name+"Wizard you have blocked an attack of the enemy");
+    public void defend() {
+        System.out.println(this.name + " Wizard, you have blocked an attack from the enemy");
     }
-    public void newpotion(Potion potion){
 
+    public void newPotion(Potion potion) {
         this.potions.add(potion);
     }
 
     public List<Potion> getPotions() {
-
         return potions;
     }
 
     public void setPotions(List<Potion> potions) {
-
         this.potions = potions;
     }
-    public void removePotion(Potion potion){
-        this.potions.remove(0);
+
+    public void removePotion(Potion potion) {
+        this.potions.remove(potion);
     }
-    public void levelUp(){
-        System.out.println("Félicitations, vous êtes maintenant au niveau " + level + " !");
+
+    public void levelUp() {
+        System.out.println("Congratulations, you have reached level " + level + "!");
         maxhp += 10;
         hp = maxhp;
         attack += 2;
 
         // Ajout d'une potion de guérison et d'une potion d'attaque
-        potions.add(new Potion("healing potion",20));
-        potions.add(new Potion("immunity potion",100));
-        potions.add(new Potion("attack potion", 30));
+        potions.add(new Potion("healing potion", 10,20));
+        potions.add(new Potion("attack potion", 15,23));
     }
 
-
-
-
 }
-
-

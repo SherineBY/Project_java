@@ -5,137 +5,294 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class GameConsole {
 
+    private Wizard playerWizard;
+    private List<Enemy> enemies;
+    private Enemy currentEnemy;
 
+    public House choiceHouse() {
+        ThreadLocalRandom threadLocalRandom = ThreadLocalRandom.current();
+        Random house = new Random();
+        int houseIndex = threadLocalRandom.nextInt(House.values().length);
+        return House.values()[houseIndex];
+    }
 
-        private Wizard Playerwizard;
-        private Wand wand;
-        private House house;
-        private List<Enemy> enemies;
-        private AbstractEnemy currentEnemy;
-        public House choiceHouse(){
-                ThreadLocalRandom threadLocalRandom= ThreadLocalRandom.current();
-                Random house = new Random();
-                int houseindex = threadLocalRandom.nextInt(House.values().length);
-                return House.values()[houseindex];
-        }
+    public Core choiceCore() {
+        ThreadLocalRandom threadLocalRandom = ThreadLocalRandom.current();
+        Random core = new Random();
+        int coreIndex = threadLocalRandom.nextInt(Core.values().length);
+        return Core.values()[coreIndex];
+    }
 
-        public Core choiceCore(){
-                ThreadLocalRandom threadLocalRandom=ThreadLocalRandom.current();
-                Random core = new Random();
-                int coreindex=threadLocalRandom.nextInt(Core.values().length);
-                return Core.values()[coreindex];
-        }
-    public Wizard startofgame() {
+    public Wizard startOfGame() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("what is your name?");
+        System.out.println("What is your name?");
         String name = scanner.nextLine();
         Pet petName = null;
         Wand wand = null;
-        Playerwizard = new Wizard(name, 1, 100, 0, petName, wand, choiceHouse());
-        AbstractEnemy currentEnemy = this.enemies.get(Playerwizard.getLevel() - 1);
-        System.out.println("hello young wizard " + name + " welcome to Hogwarts ");
-        System.out.println("you will now participate in the sorting ceremony in which the SortingHat will define to which house you belong ");
-        System.out.println("Difficult, very difficult... I see a lot of courage and intellectual qualities too. There's talent, " +
-                "oh yes, and a great desire to prove yourself. So where do I put you?");
-        System.out.println("Okey I know!you are " + choiceHouse());
-        System.out.println("Now go the Ollivander shop, you will be assigned a wand ");
+        House house = choiceHouse();
+        playerWizard = new Wizard(name, 1, 100, 0, petName, wand, house);
+        System.out.println("Hello young wizard " + name + ", welcome to Hogwarts!");
+        System.out.println("You will now participate in the sorting ceremony, in which the Sorting Hat will determine to which house you belong.");
+        System.out.println("Difficult, very difficult... I see a lot of courage and intellectual qualities too. There's talent, oh yes, and a great desire to prove yourself. So, where do I put you?");
+        playerWizard.setHouse(house);
+        System.out.println("Okay, I know! You are in " + house);
+        System.out.println("Now, go to Ollivander's shop. You will be assigned a wand.");
         wand = new Wand(choiceCore(), 25);
-        Playerwizard.setWand(wand);
-        System.out.println("Okey now you have Wand .The core is " + wand.getCore() + "and the size of your hand is " + wand.getSize() + "cm");
-        System.out.println(" before you enter Hogwarts you have to choose your pet ");
-        System.out.println("Choose your pet among this list: " + Arrays.toString(Pet.values()));
+        playerWizard.setWand(wand);
+        System.out.println("Okay, now you have a wand. The core is " + wand.getCore() + " and the size of your hand is " + wand.getSize() + " cm.");
+        System.out.println("Before you enter Hogwarts, you have to choose your pet.");
+        System.out.println("Choose your pet from this list: " + Arrays.toString(Pet.values()));
         petName = Pet.valueOf(scanner.nextLine());
-        Playerwizard.setPet(petName);
+        playerWizard.setPet(petName);
         System.out.println("You have chosen " + petName + " as your pet.");
-        return Playerwizard;
+        return playerWizard;
     }
 
-    public List<Enemy> defineEnemies(){
-        this.enemies=new ArrayList<>();
-        Enemy enemylevel1=new Enemy("troll",1,100,10,100);
-        Enemy enemylevel2=new Enemy("basilik",2,100,15,100);
-        Enemy enemylevel3=new Enemy("detraquors",3,100,20,100);
-        Enemy enemylevel4bis=new Enemy("Peter Pettigrow",4,100,25,100);
-        Enemy enemylevel4=new Enemy("voldemort",4,100,50,100);
-        Enemy enemylevel5=new Enemy("Dolores Ombrage",4,100,30,100);
-        Enemy enemylevel6=new Enemy("the death eaters",5,100,35,100);
+    public List<Enemy> defineEnemies() {
+        this.enemies = new ArrayList<>();
+        Enemy enemyLevel1 = new Enemy("Troll", 1, 100, 10, 100);
+        Enemy enemyLevel2 = new Enemy("Basilisk", 2, 100, 15, 100);
+        Enemy enemyLevel3 = new Enemy("Dementors", 3, 100, 20, 100);
+        Enemy enemyLevel4bis = new Enemy("Peter Pettigrew", 4, 100, 25, 100);
+        Enemy enemyLevel4 = new Enemy("Voldemort", 4, 100, 50, 100);
+        Enemy enemyLevel5 = new Enemy("Dolores Umbridge", 4, 100, 30, 100);
+        Enemy enemyLevel6 = new Enemy("Death Eaters", 5, 100, 35, 100);
 
-        this.enemies.add(enemylevel1);
-        this.enemies.add(enemylevel2);
-        this.enemies.add(enemylevel3);
-        this.enemies.add(enemylevel4);
-        this.enemies.add(enemylevel4bis);
-        this.enemies.add(enemylevel5);
-        this.enemies.add(enemylevel6);
+        this.enemies.add(enemyLevel1);
+        this.enemies.add(enemyLevel2);
+        this.enemies.add(enemyLevel3);
+        this.enemies.add(enemyLevel4);
+        this.enemies.add(enemyLevel4bis);
+        this.enemies.add(enemyLevel5);
+        this.enemies.add(enemyLevel6);
 
         return enemies;
     }
+
     public void level() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Bienvenue au niveau de la Pierre Philosophale");
-        List<Enemy> enemies = defineEnemies();
-        Enemy currentEnemy = enemies.get(Playerwizard.getLevel() - 1);
-        while (Playerwizard.getHp() > 0 && currentEnemy.getHp() > 0) {
-            System.out.println("\n" + Playerwizard.getName() + ", what do you want to do");
-            System.out.println("1. use potion");
-            System.out.println("2. use spell");
+        System.out.println("Welcome to the level of the Philosopher's Stone!");
+        defineEnemies();
+        currentEnemy = enemies.get(playerWizard.getLevel() - 1);
+        Potion healPotion = new Potion("Healing Potion", 20,10);
+        Potion attackPotion = new Potion("Attack Potion", 10,20);
+        AbstractSpell[] spells = {
+                new AbstractSpell("Wingardium Leviosa", 1, Core.Phoenix_feather) {
+                    @Override
+                    public int getDamage() {
+
+                        return 10;
+                    }
+                },
+                new AbstractSpell("Expecto Patronum", 2, Core.Horned_serpent_horn) {
+                    @Override
+                    public int getDamage() {
+
+                        return 15;
+                    }
+                },
+                new AbstractSpell("Accio", 3, Core.Dragon_heartsring) {
+                    @Override
+                    public int getDamage() {
+
+                        return 5;
+                    }
+                },
+                new AbstractSpell("Sectumsempra", 4, Core.Unicorn_hair) {
+                    @Override
+                    public int getDamage() {
+
+                        return 20;
+                    }
+                },
+                new AbstractSpell("Expelliarmus", 5, Core.Troll_whisker) {
+                    @Override
+                    public int getDamage() {
+
+                        return 8;
+                    }
+                }
+        };
+
+        while (playerWizard.getHp() > 0 && currentEnemy.getHp() > 0) {
+            System.out.println("\n" + playerWizard.getName() + ", what do you want to do?");
+            System.out.println("1. Use potion");
+            System.out.println("2. Use spell");
             int choice = scanner.nextInt();
             if (choice == 1) {
-                System.out.println("1. Boire une potion de guérison");
-                System.out.println("2. Boire une potion d'attaque");
+                System.out.println("1. Drink healing potion");
+                System.out.println("2. Drink attack potion");
                 int choicePotion = scanner.nextInt();
-                if (choicePotion==1) {
-                    System.out.println("1. drink heal potion ");
-                    System.out.println("2. drink immunity potion");
-                    int choisehealPotion= scanner.nextInt();
-                    if (choisehealPotion==1) {
-                        Potion healPotion = Playerwizard.getPotionOfType("heal potion");
-                        Potion.healpotioneffect(Playerwizard);
-                        Playerwizard.removePotion(healPotion);
-                    }else{
-                        Potion immunityPotion = Playerwizard.getPotionOfType("immunity potion");
-                        Potion.healpotioneffect(Playerwizard);
-                        Playerwizard.removePotion(immunityPotion);
-                    }
-                } else {
-                    System.out.println("you have chosen an attack potion so you will poison your enemy ");
-                    Potion Attackpotion = Playerwizard.getPotionOfType("poison potion attack");
-                    Potion.attackpotioneffect(currentEnemy);
-                    Playerwizard.removePotion(Attackpotion);
+                if (choicePotion == 1) {
+                    System.out.println("You have chosen a healing potion.");
+                    Potion.useHealingPotion(playerWizard, healPotion.getAmount());
+                } else if (choicePotion == 2) {
+                    System.out.println("You have chosen an attack potion.");
+                    Potion.useAttackPotion(currentEnemy, playerWizard, attackPotion.getDamageAmount());
+
                 }
             } else if (choice == 2) {
-                System.out.println("Choose a spell to use: " + Arrays.toString(AbstractSpell.values()));
-                AbstractSpell spell = AbstractSpell.valueOf(scanner.next());
-                if (Playerwizard.getWand().getCore() == AbstractSpell.getCore()) {
-                    System.out.println("The wand and the spell have the same core, the spell is twice as effective!");
-                    AbstractSpell.cast(currentEnemy, Playerwizard.getWand().getSize() * 2);
-                } else {
-                    AbstractSpell.cast(currentEnemy, Playerwizard.getWand().getSize());
+                System.out.println("Choose a spell to use:");
+                for (int i = 0; i < spells.length; i++) {
+                    System.out.println((i + 1) + ". " + spells[i].getName());
                 }
-                System.out.println("You used " + AbstractSpell.getName() + " and dealt " + currentEnemy.getAttack() + " damage to " + currentEnemy.getName() + ".");
-            }
+                int spellChoice = scanner.nextInt();
+                if (spellChoice >= 1 && spellChoice <= spells.length) {
+                    AbstractSpell spell = spells[spellChoice - 1];
+                    spell.cast(currentEnemy, playerWizard.getWand().getSize());
+                    System.out.println("You used " + spell.getName() + " and dealt " + spell.getDamage() + " damage to " + currentEnemy.getName() + ".");
+                } else {
+                    System.out.println("Invalid spell choice. Please try again.");
+                }
             }
         }
 
-        if (Playerwizard.getHp() > 0) {
-            System.out.println("\nFélicitations, vous avez vaincu " + currentEnemy.getName() + " !");
-            Playerwizard.levelUp();
-            System.out.println("Vous êtes maintenant au niveau " + Playerwizard.getLevel() + ".");
+        if (playerWizard.getHp() > 0) {
+            System.out.println("\nCongratulations, you have defeated " + currentEnemy.getName() + "!");
+            playerWizard.levelUp();
+            System.out.println("You are now at level " + playerWizard.getLevel() + ".");
             level();
         } else {
-            System.out.println("\n" + currentEnemy.getName() + " vous a vaincu. Game Over.");
+            System.out.println("\n" + currentEnemy.getName() + " has defeated you. Game Over.");
         }
+    }
+    public void level7() {
+        AbstractSpell[] spells = {
+                new AbstractSpell("expelliarmus !", 7, Core.Phoenix_feather) {
+                    @Override
+                    public int getDamage() {
+
+                        return 10;
+                    }
+                },
+                new AbstractSpell("avada kedavra", 7, Core.Phoenix_feather) {
+                    @Override
+                    public int getDamage() {
+
+                        return 10;
+                    }
+                },
+        };
+
+        System.out.println("Welcome to Level 7 - Battle Against the Bosses!");
+        System.out.println("Welcome to Level 7 - Battle Against the Bosses!");
+        Core core = Core.Phoenix_feather;
+        Boss voldemort = new Boss("Voldemort", 7, 100, 50, currentEnemy.maxhp, 50, 15, "Avada Kedavra", core, 25);
+        Boss bellatrix = new Boss("Bellatrix Lestrange", 7, 100, 30, currentEnemy.maxhp, 50, 15, "expelliarmus", core, 0);
+
+        voldemort.setCore(core);
+
+        Potion healPotion = new Potion("Healing Potion", 20,10);
+        Potion attackPotion = new Potion("Attack Potion", 30,20);
+
+        Scanner scanner = new Scanner(System.in);
+
+        // Fight against Voldemort
+        System.out.println("\nPrepare to face Voldemort!");
+        while (playerWizard.getHp() > 0 && voldemort.getHp() > 0) {
+            System.out.println("\n" + playerWizard.getName() + ", what do you want to do?");
+            System.out.println("1. Use potion");
+            System.out.println("2. Use spell");
+
+            int choice = scanner.nextInt();
+
+            if (choice == 1) {
+                System.out.println("1. Drink healing potion");
+                System.out.println("2. Drink attack potion");
+
+                int choicePotion = scanner.nextInt();
+
+                if (choicePotion == 1) {
+                    System.out.println("You have chosen a healing potion.");
+                    Potion.useHealingPotion(playerWizard, healPotion.getAmount());
+                } else if (choicePotion == 2) {
+                    System.out.println("You have chosen an attack potion.");
+                    if (playerWizard.getWand().getCore() == voldemort.getWand().getCore()) {
+                        System.out.println("Your wand shares the same core as Voldemort's wand. Something unpredictable happens!");
+                        // Implement unpredictable behavior here
+                    } else {
+                        Potion.useAttackPotion(voldemort, playerWizard, attackPotion.getDamageAmount());
+                    }
+                }
+            } else if (choice == 2) {
+                System.out.println("Choose a spell to use:");
+                int spellChoice = scanner.nextInt();
+
+                if (spellChoice >= 1 && spellChoice <= spells.length) {
+                    AbstractSpell spell = spells[spellChoice - 1];
+                    if (voldemort.getName().equals("Voldemort") && spell.getName().equals("Expelliarmus")) {
+                        System.out.println("You used Expelliarmus and successfully countered Avada Kedavra!");
+                        // Implement counter logic for Avada Kedavra here
+                    } else {
+                        spell.cast(voldemort, playerWizard.getWand().getSize());
+                        System.out.println("You used " + spell.getName() + " and dealt " + spell.getDamage() + " damage to " + voldemort.getName() + ".");
+                    }
+                } else {
+                    System.out.println("Invalid spell choice. Please try again.");
+                }
+            }
         }
+
+        if (playerWizard.getHp() > 0) {
+            System.out.println("\nCongratulations, you have defeated Voldemort!");
+            playerWizard.levelUp();
+            System.out.println("You are now at level " + playerWizard.getLevel() + ".");
+        } else {
+            System.out.println("\nVoldemort has defeated you. Game Over.");
+            return; // Exit the level if the player is defeated
+        }
+
+        // Fight against Bellatrix Lestrange
+        System.out.println("\nPrepare to face Bellatrix Lestrange!");
+        while (playerWizard.getHp() > 0 && bellatrix.getHp() > 0) {
+            System.out.println("\n" + playerWizard.getName() + ", what do you want to do?");
+            System.out.println("1. Use potion");
+            System.out.println("2. Use spell");
+
+            int choice = scanner.nextInt();
+
+            if (choice == 1) {
+                System.out.println("1. Drink healing potion");
+                System.out.println("2. Drink attack potion");
+
+                int choicePotion = scanner.nextInt();
+
+                if (choicePotion == 1) {
+                    System.out.println("You have chosen a healing potion.");
+                    Potion.useHealingPotion(playerWizard, healPotion.getAmount());
+                } else if (choicePotion == 2) {
+                    System.out.println("You have chosen an attack potion.");
+                    if (playerWizard.getWand().getCore() == bellatrix.getWand().getCore()) {
+                        System.out.println("Your wand shares the same core as Bellatrix Lestrange's wand. Something unpredictable happens!");
+                        // Implement unpredictable behavior here
+                    } else {
+                        Potion.useAttackPotion(bellatrix, playerWizard, attackPotion.getDamageAmount());
+                    }
+                }
+            } else if (choice == 2) {
+                System.out.println("Choose a spell to use:");
+                // Add your spells here
+                int spellChoice = scanner.nextInt();
+
+                if (spellChoice >= 1 && spellChoice <= spells.length) {
+                    AbstractSpell spell = spells[spellChoice - 1];
+                    spell.cast(bellatrix, playerWizard.getWand().getSize());
+                    System.out.println("You used " + spell.getName() + " and dealt " + spell.getDamage() + " damage to " + bellatrix.getName() + ".");
+                } else {
+                    System.out.println("Invalid spell choice. Please try again.");
+                }
+            }
+        }
+
+        if (playerWizard.getHp() > 0) {
+            System.out.println("\nCongratulations, you have defeated Bellatrix Lestrange!");
+            playerWizard.levelUp();
+            System.out.println("You are now at level " + playerWizard.getLevel() + ".");
+        } else {
+            System.out.println("\nBellatrix Lestrange has defeated you. Game Over.");
+        }
+    }
+
+
 }
-
-
-
-
-
-
-
-
-
-
-
 

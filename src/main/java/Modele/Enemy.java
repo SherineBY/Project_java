@@ -9,6 +9,9 @@ public class Enemy extends AbstractEnemy {
         super(name, level, maxhp, attack, hp);
         enemies=new ArrayList<>();
     }
+    public int getHp() {
+        return hp;
+    }
 
     public List<Enemy> getEnemies() {
         return enemies;
@@ -17,11 +20,14 @@ public class Enemy extends AbstractEnemy {
     public void setEnemies(List<Enemy> enemies) {
         this.enemies = enemies;
     }
+    public void setHp(int hp) {
+        this.hp = hp;
+    }
 
 
     @Override
-    public int attack(Character character) {
-        return super.attack(character);
+    public void takeDamage(int damage) {
+        super.takeDamage(damage);
     }
 
     @Override

@@ -19,8 +19,8 @@ public abstract class AbstractEnemy extends Character {
     }
 
     @Override
-    public int attack(Character character) {
-        return super.attack(character);
+    public void takeDamage(int damage) {
+        super.takeDamage(damage);
     }
 
     @Override
